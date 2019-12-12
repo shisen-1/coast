@@ -1,0 +1,246 @@
+数据库表结构：
+  - 船端数据库：
+      totalcount:            5
+      - ais_position_report: CREATE TABLE public.ais_position_report
+                            (
+                                id integer NOT NULL DEFAULT nextval('ais_position_report_id_seq'::regclass),
+                                mmsi character varying(9) COLLATE pg_catalog."default",
+                                update_time timestamp(3) with time zone,
+                                channel character varying(1) COLLATE pg_catalog."default",
+                                nav_status numeric(2,0),
+                                rot numeric(4,1),
+                                sog numeric(4,1),
+                                position_accuracy character varying(1) COLLATE pg_catalog."default",
+                                longitude numeric(8,5),
+                                latitude numeric(7,5),
+                                cog numeric(4,1),
+                                true_heading numeric(3,0),
+                                utc_second numeric(2,0),
+                                raim_flag character varying(1) COLLATE pg_catalog."default",
+                                communication_status bit varying(19),
+                                ais_station_type character varying(1) COLLATE pg_catalog."default",
+                                message_id character varying(2) COLLATE pg_catalog."default",
+                                CONSTRAINT ais_position_report_pkey PRIMARY KEY (id)
+                            )
+                            WITH (
+                                OIDS = FALSE
+                            )
+                            TABLESPACE pg_default;
+    - ais_static_voyage: CREATE TABLE public.ais_static_voyage
+                            (
+                                id integer NOT NULL DEFAULT nextval('ais_static_voyage_id_seq'::regclass),
+                                mmsi character varying(9) COLLATE pg_catalog."default",
+                                update_time timestamp(3) with time zone,
+                                ais_version character varying(1) COLLATE pg_catalog."default",
+                                imo_number character varying(10) COLLATE pg_catalog."default",
+                                call_number character varying(7) COLLATE pg_catalog."default",
+                                en_name character varying(20) COLLATE pg_catalog."default",
+                                ship_cargo_type character varying(3) COLLATE pg_catalog."default",
+                                dimension_a numeric(3,0),
+                                dimension_b numeric(3,0),
+                                dimension_c numeric(3,0),
+                                dimension_d numeric(3,0),
+                                position_type character varying(2) COLLATE pg_catalog."default",
+                                eta timestamp(3) with time zone,
+                                static_draught numeric(3,1),
+                                destination_addr character varying(20) COLLATE pg_catalog."default",
+                                message_id character varying(2) COLLATE pg_catalog."default",
+                                CONSTRAINT ais_static_voyage_pkey PRIMARY KEY (id)
+                            )
+                            WITH (
+                                OIDS = FALSE
+                            )
+                            TABLESPACE pg_default;
+    - ship_status:       CREATE TABLE public.ship_status
+                            (
+                                id bigint NOT NULL DEFAULT nextval('ship_status_id_seq'::regclass),
+                                longitude character varying(255) COLLATE pg_catalog."default",
+                                latitude character varying(255) COLLATE pg_catalog."default",
+                                true_track character varying(255) COLLATE pg_catalog."default",
+                                magnetic_track character varying(255) COLLATE pg_catalog."default",
+                                ground_speed_knots character varying(255) COLLATE pg_catalog."default",
+                                ground_speed_kmh character varying(255) COLLATE pg_catalog."default",
+                                up_time timestamp(3) with time zone,
+                                CONSTRAINT ship_status_pkey PRIMARY KEY (id)
+                            )
+                            WITH (
+                                OIDS = FALSE
+                            )
+                            TABLESPACE pg_default;
+    - wan_speed:         CREATE TABLE public.wan_speed
+                          (
+                              wan_id bigint NOT NULL DEFAULT nextval('wan_speed_wan_id_seq'::regclass),
+                              input_speed character varying(50) COLLATE pg_catalog."default",
+                              output_speed character varying(50) COLLATE pg_catalog."default",
+                              wan_port character varying(10) COLLATE pg_catalog."default",
+                              up_time time without time zone,
+                              CONSTRAINT wan_speed_pkey PRIMARY KEY (wan_id)
+                          )
+                          WITH (
+                              OIDS = FALSE
+                          )
+                          TABLESPACE pg_default;
+    - wan_status:        CREATE TABLE public.wan_status
+                          (
+                              wan_id bigint NOT NULL DEFAULT nextval('wan_status_wan_id_seq'::regclass),
+                              up_time timestamp with time zone,
+                              wan_port character varying(10) COLLATE pg_catalog."default",
+                              wan_status character varying(2) COLLATE pg_catalog."default",
+                              CONSTRAINT wan_status_pkey PRIMARY KEY (wan_id)
+                          )
+                          WITH (
+                              OIDS = FALSE
+                          )
+                          TABLESPACE pg_default;
+  - 岸端数据库：
+    totalcount:            5
+    - ais_position_report: CREATE TABLE public.ais_position_report
+                          (
+                              id integer NOT NULL DEFAULT nextval('ais_position_report_id_seq'::regclass),
+                              ship_code character varying(255) COLLATE pg_catalog."default",
+                              mmsi character varying(9) COLLATE pg_catalog."default",
+                              update_time timestamp(3) with time zone,
+                              channel character varying(1) COLLATE pg_catalog."default",
+                              nav_status numeric(2,0),
+                              rot numeric(4,1),
+                              sog numeric(4,1),
+                              position_accuracy character varying(1) COLLATE pg_catalog."default",
+                              longitude numeric(8,5),
+                              latitude numeric(7,5),
+                              cog numeric(4,1),
+                              true_heading numeric(3,0),
+                              utc_second numeric(2,0),
+                              raim_flag character varying(1) COLLATE pg_catalog."default",
+                              communication_status bit varying(19),
+                              ais_station_type character varying(1) COLLATE pg_catalog."default",
+                              message_id character varying(2) COLLATE pg_catalog."default",
+                              CONSTRAINT ais_position_report_pkey PRIMARY KEY (id)
+                          )
+                          WITH (
+                              OIDS = FALSE
+                          )
+                          TABLESPACE pg_default;
+  - ais_static_voyage: CREATE TABLE public.ais_static_voyage
+                          (
+                              id integer NOT NULL DEFAULT nextval('ais_static_voyage_id_seq'::regclass),
+                              ship_code character varying(255) COLLATE pg_catalog."default",
+                              mmsi character varying(9) COLLATE pg_catalog."default",
+                              update_time timestamp(3) with time zone,
+                              ais_version character varying(1) COLLATE pg_catalog."default",
+                              imo_number character varying(10) COLLATE pg_catalog."default",
+                              call_number character varying(7) COLLATE pg_catalog."default",
+                              en_name character varying(20) COLLATE pg_catalog."default",
+                              ship_cargo_type character varying(3) COLLATE pg_catalog."default",
+                              dimension_a numeric(3,0),
+                              dimension_b numeric(3,0),
+                              dimension_c numeric(3,0),
+                              dimension_d numeric(3,0),
+                              position_type character varying(2) COLLATE pg_catalog."default",
+                              eta timestamp(3) with time zone,
+                              static_draught numeric(3,1),
+                              destination_addr character varying(20) COLLATE pg_catalog."default",
+                              message_id character varying(2) COLLATE pg_catalog."default",
+                              CONSTRAINT ais_static_voyage_pkey PRIMARY KEY (id)
+                          )
+                          WITH (
+                              OIDS = FALSE
+                          )
+                          TABLESPACE pg_default;
+  - ship_status:       CREATE TABLE public.ship_status
+                          (
+                              id bigint NOT NULL DEFAULT nextval('ship_status_id_seq'::regclass),
+                              ship_code character varying(255) COLLATE pg_catalog."default",
+                              longitude character varying(255) COLLATE pg_catalog."default",
+                              latitude character varying(255) COLLATE pg_catalog."default",
+                              true_track character varying(255) COLLATE pg_catalog."default",
+                              magnetic_track character varying(255) COLLATE pg_catalog."default",
+                              ground_speed_knots character varying(255) COLLATE pg_catalog."default",
+                              ground_speed_kmh character varying(255) COLLATE pg_catalog."default",
+                              up_time timestamp(3) with time zone,
+                              CONSTRAINT ship_status_pkey PRIMARY KEY (id)
+                          )
+                          WITH (
+                              OIDS = FALSE
+                          )
+                          TABLESPACE pg_default;
+  - wan_speed:         CREATE TABLE public.wan_speed
+                        (
+                            wan_id bigint NOT NULL DEFAULT nextval('wan_speed_wan_id_seq'::regclass),
+                            ship_code character varying(255) COLLATE pg_catalog."default",
+                            input_speed character varying(50) COLLATE pg_catalog."default",
+                            output_speed character varying(50) COLLATE pg_catalog."default",
+                            wan_port character varying(10) COLLATE pg_catalog."default",
+                            up_time timestamp with time zone,
+                            CONSTRAINT wan_speed_pkey PRIMARY KEY (wan_id)
+                        )
+                        WITH (
+                            OIDS = FALSE
+                        )
+                        TABLESPACE pg_default;
+  - wan_status:        CREATE TABLE public.wan_status
+                        (
+                            wan_id bigint NOT NULL DEFAULT nextval('wan_status_wan_id_seq'::regclass),
+                            ship_code character varying(255) COLLATE pg_catalog."default",
+                            up_time timestamp with time zone,
+                            wan_port character varying(10) COLLATE pg_catalog."default",
+                            wan_status character varying(2) COLLATE pg_catalog."default",
+                            CONSTRAINT wan_status_pkey PRIMARY KEY (wan_id)
+                        )
+                        WITH (
+                            OIDS = FALSE
+                        )
+                        TABLESPACE pg_default;
+
+
+CREATE SEQUENCE public.wan_speed_wan_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.wan_speed_wan_id_seq
+    OWNER TO cssutilizer;
+
+
+
+CREATE SEQUENCE public.ais_position_report_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.ais_position_report_id_seq
+    OWNER TO cssutilizer;
+
+CREATE SEQUENCE public.ais_static_voyage_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.ais_static_voyage_id_seq
+    OWNER TO cssutilizer;
+
+
+CREATE SEQUENCE public.ship_status_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.ship_status_id_seq
+    OWNER TO cssutilizer;
+
+CREATE SEQUENCE public.wan_status_wan_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.wan_status_wan_id_seq
+    OWNER TO cssutilizer;
