@@ -8,3 +8,5 @@ export JAVA_HOME JRE_HOME CLASS_PATH PATH
 export LD_LIBRARY_PATH=/usr/local/lib
 
 sudo apt-get install snmpd snmp snmp-mibs-downloader
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
